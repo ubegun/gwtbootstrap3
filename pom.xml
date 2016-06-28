@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- See description of deployment process at http://central.sonatype.org/pages/ossrh-guide.html -->
+    <!-- See description of deployment process at
+         http://central.sonatype.org/pages/ossrh-guide.html -->
 
     <groupId>org.gwtbootstrap3</groupId>
     <artifactId>gwtbootstrap3-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.9.1.f131</version>
     <name>GwtBootstrap3 Parent</name>
     <description>GWT wrapper for the Bootstrap front-end framework</description>
     <url>http://gwtbootstrap3.org</url>
 
     <prerequisites>
-        <maven>3.2.1</maven>
+        <maven>3.0.5</maven>
     </prerequisites>
 
     <scm>
         <connection>scm:git:git@github.com:gwtbootstrap3/gwtbootstrap3.git</connection>
         <developerConnection>scm:git:git@github.com:gwtbootstrap3/gwtbootstrap3.git</developerConnection>
         <url>git@github.com:gwtbootstrap3/gwtbootstrap3.git</url>
-        <tag>HEAD</tag>
     </scm>
 
     <licenses>
@@ -54,15 +54,6 @@
             </roles>
             <timezone>UTC+6</timezone>
         </developer>
-        <developer>
-            <id>sjardine</id>
-            <name>Steven Jardine</name>
-            <email>steven.jardine@gmail.com</email>
-            <roles>
-                <role>developer</role>
-            </roles>
-            <timezone>UTC-7</timezone>
-        </developer>
     </developers>
 
     <modules>
@@ -70,41 +61,51 @@
     </modules>
 
     <properties>
-        <java.version>1.7</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <license-maven-plugin.version>1.8</license-maven-plugin.version>
-        <gwt-maven-plugin.version>${gwt.version}</gwt-maven-plugin.version>
-        <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
-        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-        <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
-        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-        <maven-source-plugin.version>2.4</maven-source-plugin.version>
-        <nexus-staging-maven-plugin.version>1.6.6</nexus-staging-maven-plugin.version>
-
+        <source.version>1.6</source.version>
+        <github.global.server>github</github.global.server>
         <gwt.version>2.7.0</gwt.version>
-        <junit.version>4.12</junit.version>
     </properties>
+
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
+              <groupId>com.github.github</groupId>
+              <artifactId>site-maven-plugin</artifactId>
+              <version>0.11</version>
+              <configuration>
+                <message>Maven artifacts for ${project.artifactId} ${project.version}</message>
+                <!-- git commit message -->
+                <noJekyll>true</noJekyll>
+                <!-- disable webpage processing -->
+                <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
+                <!-- matches distribution management repository url above -->
+                <branch>refs/heads/mvn-repo</branch>
+                <!-- remote branch name -->
+                <includes>
+                  <include>**/*</include>
+                </includes>
+                <repositoryName>gwtbootstrap3</repositoryName>
+                <!-- github repo name -->
+                <repositoryOwner>ubegun</repositoryOwner>
+                <!-- github username -->
+              </configuration>
+              <executions>
+                <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+                <execution>
+                  <goals>
+                    <goal>site</goal>
+                  </goals>
+                  <phase>deploy</phase>
+                </execution>
+              </executions>
             </plugin>
+        
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>${license-maven-plugin.version}</version>
+                <version>1.7</version>
                 <configuration>
                     <licenseName>apache_v2</licenseName>
                     <inceptionYear>2013</inceptionYear>
@@ -128,7 +129,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven-checkstyle-plugin.version}</version>
+                <version>2.13</version>
                 <executions>
                     <execution>
                         <configuration>
@@ -140,26 +141,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>${nexus-staging-maven-plugin.version}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>${maven-release-plugin.version}</version>
-                <configuration>
-                    <arguments>-Prelease</arguments>
-                    <preparationGoals>package</preparationGoals>
-                </configuration>
             </plugin>
         </plugins>
 
@@ -186,6 +167,18 @@
                     <inherited>true</inherited>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                    <configuration>
+                        <source>${source.version}</source>
+                        <target>${source.version}</target>
+                        <compilerArgument>-Xlint:all</compilerArgument>
+                        <showWarnings>true</showWarnings>
+                        <showDeprecation>true</showDeprecation>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
                     <version>1.0.0</version>
@@ -205,7 +198,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <execute />
+                                        <execute/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -218,7 +211,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <execute />
+                                        <execute/>
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
@@ -237,7 +230,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>${maven-source-plugin.version}</version>
+                        <version>2.2.1</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -250,54 +243,11 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>${maven-javadoc-plugin.version}</version>
+                        <version>2.9.1</version>
                         <configuration>
                             <locale>en</locale>
                             <linksource>true</linksource>
                             <validateLinks>true</validateLinks>
-                            <noqualifier>all</noqualifier>
-                            <links>
-                                <link>http://www.gwtproject.org/javadoc/latest</link>
-                            </links>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>${maven-source-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>${maven-javadoc-plugin.version}</version>
-                        <configuration>
-                            <locale>en</locale>
-                            <linksource>true</linksource>
-                            <validateLinks>true</validateLinks>
-                            <noqualifier>all</noqualifier>
                             <links>
                                 <link>http://www.gwtproject.org/javadoc/latest</link>
                             </links>
@@ -314,7 +264,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${maven-gpg-plugin.version}</version>
+                        <version>1.5</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -363,17 +313,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        <!-- Required for CI to fetch the latest snapshot releases of gwtbootstrap3 -->
-        <repository>
-            <id>sonatype-nexus-snapshots</id>
-            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -395,6 +334,11 @@
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+ 	<repository>
+            <id>internal.repo</id>
+            <name>Temporary Staging Repository</name>
+            <url>file://${project.build.directory}/mvn-repo</url>
+      </repository>
     </distributionManagement>
 
 </project>

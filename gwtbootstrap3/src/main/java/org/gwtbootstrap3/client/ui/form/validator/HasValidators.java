@@ -36,22 +36,13 @@ public interface HasValidators<T> extends HasValidationChangedHandlers {
      * @param validator the validator
      */
     void addValidator(Validator<T> validator);
-    
+
     /**
      * Gets the validate on blur.
      *
      * @return the validate on blur
      */
     boolean getValidateOnBlur();
-    
-
-    /**
-     * Removes the validator.
-     *
-     * @param validator the validator
-     * @return true, if successful
-     */
-    boolean removeValidator(Validator<T> validator);
 
     /**
      * Reset the form element to blank and clear error messages.
@@ -70,7 +61,7 @@ public interface HasValidators<T> extends HasValidationChangedHandlers {
      *
      * @param validators the new validators
      */
-    void setValidators(@SuppressWarnings("unchecked") Validator<T>... validators);
+    void setValidators(Validator<T>... validators);
 
     /**
      * Validate the field's value using the supplied validators.

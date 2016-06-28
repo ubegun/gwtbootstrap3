@@ -43,9 +43,9 @@ import com.google.gwt.text.shared.Parser;
 import com.google.gwt.text.shared.Renderer;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-public class ValueBoxBase<T> extends com.google.gwt.user.client.ui.ValueBoxBase<T> implements HasId, HasReadOnly,
-        HasResponsiveness, HasPlaceholder, HasAutoComplete, HasSize<InputSize>, HasEditorErrors<T>,
-        HasErrorHandler, HasValidators<T>, HasBlankValidator<T> {
+public class ValueBoxBase<T> extends com.google.gwt.user.client.ui.ValueBoxBase<T> implements HasId, HasResponsiveness,
+        HasPlaceholder, HasAutoComplete, HasSize<InputSize>, HasEditorErrors<T>, HasErrorHandler, HasValidators<T>,
+        HasBlankValidator<T> {
 
     private static final String MAX_LENGTH = "maxlength";
 
@@ -142,7 +142,6 @@ public class ValueBoxBase<T> extends com.google.gwt.user.client.ui.ValueBoxBase<
     @Override
     public void setErrorHandler(ErrorHandler handler) {
         errorHandlerMixin.setErrorHandler(handler);
-        validatorMixin.setErrorHandler(handler);
     }
 
     /** {@inheritDoc} */
@@ -171,12 +170,6 @@ public class ValueBoxBase<T> extends com.google.gwt.user.client.ui.ValueBoxBase<
     public void addValidator(Validator<T> validator) {
         validatorMixin.addValidator(validator);
     }
-    
-    /** {@inheritDoc} */
-    @Override
-    public boolean removeValidator(Validator<T> validator) {
-        return validatorMixin.removeValidator(validator);
-    }
 
     @Override
     public boolean getValidateOnBlur() {
@@ -189,7 +182,7 @@ public class ValueBoxBase<T> extends com.google.gwt.user.client.ui.ValueBoxBase<
     }
 
     @Override
-    public void setValidators(@SuppressWarnings("unchecked") Validator<T>... validators) {
+    public void setValidators(Validator<T>... validators) {
         validatorMixin.setValidators(validators);
     }
 

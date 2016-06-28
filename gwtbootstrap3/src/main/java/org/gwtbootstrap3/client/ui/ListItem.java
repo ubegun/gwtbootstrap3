@@ -10,7 +10,7 @@ package org.gwtbootstrap3.client.ui;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,6 +24,7 @@ import org.gwtbootstrap3.client.ui.base.AbstractListItem;
 import org.gwtbootstrap3.client.ui.constants.Styles;
 import org.gwtbootstrap3.client.ui.html.Text;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -41,8 +42,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
  * @see Navbar
  */
 public class ListItem extends AbstractListItem implements HasWidgets, HasText, HasClickHandlers {
-
-    private Text text = null;
+    private Text text;
 
     /**
      * Creates a default list item element
@@ -60,22 +60,30 @@ public class ListItem extends AbstractListItem implements HasWidgets, HasText, H
         setText(text);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public HandlerRegistration addClickHandler(final ClickHandler handler) {
-        return addDomHandler(handler, ClickEvent.getType());
+    public void setText(final String text) {
+        this.text = new Text(text);
+        add(this.text, (Element) getElement());
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getText() {
         return text.getText();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onAttach() {
         super.onAttach();
+
         // Adding styles to the list item depending on the parent
         if (getParent() != null) {
             if (getParent() instanceof MediaList) {
@@ -84,15 +92,8 @@ public class ListItem extends AbstractListItem implements HasWidgets, HasText, H
         }
     }
 
-    /** {@inheritDoc} */
     @Override
-    public void setText(final String text) {
-        if (this.text == null) {
-            this.text = new Text(text);
-            add(this.text);
-        } else {
-            this.text.setText(text);
-        }
+    public HandlerRegistration addClickHandler(final ClickHandler handler) {
+        return addDomHandler(handler, ClickEvent.getType());
     }
-
 }

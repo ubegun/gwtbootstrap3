@@ -50,8 +50,6 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
  *
  * @param <W> the generic type
  * @param <V> the value type
- * 
- * @author Steven Jardine
  */
 public class DefaultValidatorMixin<W extends Widget & HasValue<V> & Editor<V>, V> implements HasValidators<V> {
 
@@ -60,8 +58,6 @@ public class DefaultValidatorMixin<W extends Widget & HasValue<V> & Editor<V>, V
     private EventBus eventBus;
 
     private W inputWidget;
-
-    private Boolean valid = null;
 
     private boolean validateOnBlur;
 
@@ -77,22 +73,13 @@ public class DefaultValidatorMixin<W extends Widget & HasValue<V> & Editor<V>, V
         this.inputWidget = inputWidget;
         this.errorHandler = errorHandler;
         eventBus = new SimpleEventBus();
-
-        setupBlurValidation();
-        setupValueChangeValidation();
-    }
-
-    protected HandlerRegistration setupBlurValidation() {
-        return inputWidget.addDomHandler(new BlurHandler() {
+        inputWidget.addDomHandler(new BlurHandler() {
             @Override
             public void onBlur(BlurEvent event) {
                 validate(validateOnBlur);
             }
         }, BlurEvent.getType());
-    }
-
-    protected HandlerRegistration setupValueChangeValidation() {
-        return inputWidget.addHandler(new ValueChangeHandler<V>() {
+        inputWidget.addHandler(new ValueChangeHandler<V>() {
             @Override
             public void onValueChange(ValueChangeEvent<V> event) {
                 validate(false);
@@ -116,26 +103,10 @@ public class DefaultValidatorMixin<W extends Widget & HasValue<V> & Editor<V>, V
         eventBus.fireEvent(event);
     }
 
-    /**
-     * @return the inputWidget
-     */
-    public W getInputWidget() {
-        return inputWidget;
-    }
-
     /** {@inheritDoc} */
     @Override
     public boolean getValidateOnBlur() {
         return validateOnBlur;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean removeValidator(Validator<V> validator) {
-        for (ValidatorWrapper<V> wrapper : validators) {
-            if (wrapper.getValidator().equals(validator)) { return validators.remove(wrapper); }
-        }
-        return false;
     }
 
     /** {@inheritDoc} */
@@ -163,7 +134,7 @@ public class DefaultValidatorMixin<W extends Widget & HasValue<V> & Editor<V>, V
 
     /** {@inheritDoc} */
     @Override
-    public void setValidators(@SuppressWarnings("unchecked") Validator<V>... newValidators) {
+    public void setValidators(Validator<V>... newValidators) {
         validators.clear();
         for (Validator<V> validator : newValidators) {
             addValidator(validator);
@@ -176,12 +147,14 @@ public class DefaultValidatorMixin<W extends Widget & HasValue<V> & Editor<V>, V
         return validate(true);
     }
 
+    private Boolean valid = null;
+
     /** {@inheritDoc} */
     @Override
     public boolean validate(boolean show) {
         Boolean oldValid = valid;
         valid = true;
-        if (errorHandler != null && !validators.isEmpty()) {
+        if (errorHandler != null) {
             List<EditorError> errors = new ArrayList<EditorError>();
             for (ValidatorWrapper<V> wrapper : validators) {
                 Validator<V> validator = wrapper.getValidator();

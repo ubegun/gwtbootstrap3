@@ -27,8 +27,6 @@ import org.gwtbootstrap3.client.ui.constants.InputType;
 import org.gwtbootstrap3.client.ui.constants.Styles;
 
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.text.shared.Parser;
-import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.text.shared.testing.PassthroughParser;
 import com.google.gwt.text.shared.testing.PassthroughRenderer;
 import com.google.gwt.uibinder.client.UiConstructor;
@@ -39,15 +37,10 @@ import com.google.gwt.uibinder.client.UiConstructor;
 public class Input extends ValueBoxBase<String> implements HasInputType {
 
     private static final String MIN = "min";
-
     private static final String MAX = "max";
 
     public Input() {
-        this(PassthroughRenderer.instance(), PassthroughParser.instance());
-    }
-
-    public Input(Renderer<String> renderer, Parser<String> parser) {
-        super(Document.get().createElement(ElementTags.INPUT), renderer, parser);
+        super(Document.get().createElement(ElementTags.INPUT), PassthroughRenderer.instance(), PassthroughParser.instance());
         addStyleName(Styles.FORM_CONTROL);
     }
 
@@ -72,7 +65,9 @@ public class Input extends ValueBoxBase<String> implements HasInputType {
 
     @Override
     public InputType getType() {
-        if (getElement().getAttribute(TYPE) == null || getElement().getAttribute(TYPE).isEmpty()) { return null; }
+        if (getElement().getAttribute(TYPE) == null || getElement().getAttribute(TYPE).isEmpty()) {
+            return null;
+        }
         return InputType.valueOf(getElement().getAttribute(TYPE));
     }
 

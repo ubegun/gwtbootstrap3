@@ -4,7 +4,7 @@ package org.gwtbootstrap3.client.ui;
  * #%L
  * GwtBootstrap3
  * %%
- * Copyright (C) 2016 GwtBootstrap3
+ * Copyright (C) 2013 GwtBootstrap3
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,24 +20,9 @@ package org.gwtbootstrap3.client.ui;
  * #L%
  */
 
-import com.google.gwt.dom.client.AnchorElement;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.Focusable;
-import com.google.gwt.user.client.ui.HasEnabled;
-import com.google.gwt.user.client.ui.HasHTML;
-import com.google.gwt.user.client.ui.Widget;
+import java.util.List;
+
 import org.gwtbootstrap3.client.ui.base.ComplexWidget;
-import org.gwtbootstrap3.client.ui.base.HasBadge;
 import org.gwtbootstrap3.client.ui.base.HasDataParent;
 import org.gwtbootstrap3.client.ui.base.HasDataTarget;
 import org.gwtbootstrap3.client.ui.base.HasDataToggle;
@@ -56,7 +41,6 @@ import org.gwtbootstrap3.client.ui.base.mixin.FocusableMixin;
 import org.gwtbootstrap3.client.ui.base.mixin.IconTextMixin;
 import org.gwtbootstrap3.client.ui.base.mixin.PullMixin;
 import org.gwtbootstrap3.client.ui.constants.Attributes;
-import org.gwtbootstrap3.client.ui.constants.BadgePosition;
 import org.gwtbootstrap3.client.ui.constants.IconFlip;
 import org.gwtbootstrap3.client.ui.constants.IconPosition;
 import org.gwtbootstrap3.client.ui.constants.IconRotate;
@@ -66,7 +50,22 @@ import org.gwtbootstrap3.client.ui.constants.Pull;
 import org.gwtbootstrap3.client.ui.constants.Styles;
 import org.gwtbootstrap3.client.ui.constants.Toggle;
 
-import java.util.List;
+import com.google.gwt.dom.client.AnchorElement;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.Focusable;
+import com.google.gwt.user.client.ui.HasEnabled;
+import com.google.gwt.user.client.ui.HasHTML;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Anchor {@code <a>} element with text and optional icon.
@@ -74,10 +73,9 @@ import java.util.List;
  * @author Sven Jacobs
  * @author Joshua Godi
  * @author Grant Slender
- * @author Drew Spencer
  */
 public class Anchor extends ComplexWidget implements HasEnabled, HasClickHandlers, HasDoubleClickHandlers, HasHref, HasDataToggle, HasDataParent,
-        HasTargetHistoryToken, HasHTML, HasIcon, HasIconPosition, Focusable, HasDataTarget, HasTarget, HasPull, HasBadge {
+        HasTargetHistoryToken, HasHTML, HasIcon, HasIconPosition, Focusable, HasDataTarget, HasTarget, HasPull {
 
     private final PullMixin<Anchor> pullMixin = new PullMixin<Anchor>(this);
     private final DataToggleMixin<Anchor> toggleMixin = new DataToggleMixin<Anchor>(this);
@@ -250,16 +248,32 @@ public class Anchor extends ComplexWidget implements HasEnabled, HasClickHandler
      * {@inheritDoc}
      */
     @Override
-    public void setIconInverse(final boolean iconInverse) {
-        iconTextMixin.setIconInverse(iconInverse);
+    public void setIconMuted(final boolean iconMuted) {
+        iconTextMixin.setIconMuted(iconMuted);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isIconInverse() {
-        return iconTextMixin.isIconInverse();
+    public boolean isIconMuted() {
+        return iconTextMixin.isIconMuted();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setIconLight(final boolean iconLight) {
+        iconTextMixin.setIconLight(iconLight);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isIconLight() {
+        return iconTextMixin.isIconLight();
     }
 
     /**
@@ -276,22 +290,6 @@ public class Anchor extends ComplexWidget implements HasEnabled, HasClickHandler
     @Override
     public boolean isIconSpin() {
         return iconTextMixin.isIconSpin();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setIconPulse(boolean iconPulse) {
-        iconTextMixin.setIconPulse(iconPulse);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isIconPulse() {
-        return iconTextMixin.isIconPulse();
     }
 
     /**
@@ -498,26 +496,6 @@ public class Anchor extends ComplexWidget implements HasEnabled, HasClickHandler
         enabledMixin.setEnabled(enabled);
     }
 
-    @Override
-    public void setBadgeText(String badgeText) {
-        iconTextMixin.setBadgeText(badgeText);
-    }
-
-    @Override
-    public String getBadgeText() {
-        return iconTextMixin.getBadgeText();
-    }
-
-    @Override
-    public void setBadgePosition(BadgePosition badgePosition) {
-        iconTextMixin.setBadgePosition(badgePosition);
-    }
-
-    @Override
-    public BadgePosition getBadgePosition() {
-        return iconTextMixin.getBadgePosition();
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -551,5 +529,4 @@ public class Anchor extends ComplexWidget implements HasEnabled, HasClickHandler
         }
         super.onBrowserEvent(event);
     }
-
 }

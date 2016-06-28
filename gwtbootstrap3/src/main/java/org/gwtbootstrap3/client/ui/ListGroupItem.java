@@ -50,14 +50,6 @@ public class ListGroupItem extends ComplexWidget implements HasType<ListGroupIte
         span.setText(text);
     }
 
-    public String getHTML() {
-        return span.getHTML();
-    }
-
-    public void setHTML(String html) {
-        span.setHTML(html);
-    }
-
     @Override
     public void setType(final ListGroupItemType type) {
         StyleHelper.addUniqueEnumStyleName(this, ListGroupItemType.class, type);
