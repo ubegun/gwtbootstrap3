@@ -60,7 +60,6 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
@@ -139,16 +138,8 @@ public class SuggestBox extends com.google.gwt.user.client.ui.SuggestBox impleme
                 };
                 Window.addResizeHandler(popupResizeHandler);
             }
-            // Try and set the z-index of the popup to the same as the SuggestBox.
-            if (!suggestBox.getElement().getStyle().getZIndex().equals("")) {
-                try {
-                    getPopupPanel().getElement().getStyle()
-                            .setZIndex(Integer.valueOf(suggestBox.getElement().getStyle().getZIndex()));
-                } catch (Exception e) {
-                    // Do nothing. We tried....
-                }
-            }
         }
+
     }
 
     private final EnabledMixin<SuggestBox> enabledMixin = new EnabledMixin<SuggestBox>(this);
@@ -201,19 +192,11 @@ public class SuggestBox extends com.google.gwt.user.client.ui.SuggestBox impleme
         setStyleName(Styles.FORM_CONTROL);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public HandlerRegistration addValidationChangedHandler(ValidationChangedHandler handler) {
-        return validatorMixin.addValidationChangedHandler(handler);
-    }
-
-    /** {@inheritDoc} */
     @Override
     public void addValidator(Validator<String> validator) {
         validatorMixin.addValidator(validator);
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean getAllowBlank() {
         return validatorMixin.getAllowBlank();
@@ -269,34 +252,6 @@ public class SuggestBox extends com.google.gwt.user.client.ui.SuggestBox impleme
     }
 
     @Override
-    protected void onAttach() {
-        super.onAttach();
-        // Try and set the z-index.
-        Integer zIndex = null;
-        Widget widget = this;
-        while (zIndex == null && widget != null) {
-            if (!widget.getElement().getStyle().getZIndex().equals("")) {
-                try {
-                    zIndex = Integer.valueOf(widget.getElement().getStyle().getZIndex());
-                    zIndex += 10;
-                } catch (Exception e) {
-                    zIndex = null;
-                }
-            }
-            widget = widget.getParent();
-        }
-        if (zIndex != null) {
-            getElement().getStyle().setZIndex(zIndex);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean removeValidator(Validator<String> validator) {
-        return validatorMixin.removeValidator(validator);
-    }
-
-    @Override
     public void reset() {
         validatorMixin.reset();
     }
@@ -322,7 +277,6 @@ public class SuggestBox extends com.google.gwt.user.client.ui.SuggestBox impleme
     @Override
     public void setErrorHandler(ErrorHandler handler) {
         errorHandlerMixin.setErrorHandler(handler);
-        validatorMixin.setErrorHandler(handler);
     }
 
     /** {@inheritDoc} */
@@ -361,7 +315,7 @@ public class SuggestBox extends com.google.gwt.user.client.ui.SuggestBox impleme
     }
 
     @Override
-    public void setValidators(@SuppressWarnings("unchecked") Validator<String>... validators) {
+    public void setValidators(Validator<String>... validators) {
         validatorMixin.setValidators(validators);
     }
 
@@ -377,16 +331,19 @@ public class SuggestBox extends com.google.gwt.user.client.ui.SuggestBox impleme
         errorHandlerMixin.showErrors(errors);
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean validate() {
         return validatorMixin.validate();
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean validate(boolean show) {
         return validatorMixin.validate(show);
+    }
+
+    @Override
+    public HandlerRegistration addValidationChangedHandler(ValidationChangedHandler handler) {
+        return validatorMixin.addValidationChangedHandler(handler);
     }
 
 }

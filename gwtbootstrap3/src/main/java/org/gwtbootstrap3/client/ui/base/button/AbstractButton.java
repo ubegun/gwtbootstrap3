@@ -30,7 +30,6 @@ import org.gwtbootstrap3.client.ui.base.HasType;
 import org.gwtbootstrap3.client.ui.base.helper.StyleHelper;
 import org.gwtbootstrap3.client.ui.base.mixin.ActiveMixin;
 import org.gwtbootstrap3.client.ui.base.mixin.DataTargetMixin;
-import org.gwtbootstrap3.client.ui.base.mixin.EnabledMixin;
 import org.gwtbootstrap3.client.ui.base.mixin.FocusableMixin;
 import org.gwtbootstrap3.client.ui.constants.Attributes;
 import org.gwtbootstrap3.client.ui.constants.ButtonDismiss;
@@ -98,7 +97,6 @@ public abstract class AbstractButton extends ComplexWidget implements HasEnabled
     private final DataTargetMixin<AbstractButton> targetMixin = new DataTargetMixin<AbstractButton>(this);
     private final ActiveMixin<AbstractButton> activeMixin = new ActiveMixin<AbstractButton>(this);
     private final FocusableMixin<AbstractButton> focusableMixin = new FocusableMixin<AbstractButton>(this);
-    private final EnabledMixin<AbstractButton> enabledMixin = new EnabledMixin<AbstractButton>(this);
 
     /**
      * Creates button with DEFAULT type.
@@ -125,12 +123,12 @@ public abstract class AbstractButton extends ComplexWidget implements HasEnabled
 
     @Override
     public void setEnabled(final boolean enabled) {
-        enabledMixin.setEnabled(enabled);
+        getElement().setPropertyBoolean("disabled", !enabled);
     }
 
     @Override
     public boolean isEnabled() {
-        return enabledMixin.isEnabled();
+        return !getElement().getPropertyBoolean("disabled");
     }
 
     @Override

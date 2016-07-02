@@ -1,7 +1,5 @@
 package org.gwtbootstrap3.client.ui.form.validator;
 
-import java.util.Collection;
-
 import org.gwtbootstrap3.client.ui.form.validator.ValidationMessages.Keys;
 
 /*
@@ -51,13 +49,12 @@ public class BlankValidator<T> extends AbstractValidator<T> {
     /** {@inheritDoc} */
     @Override
     public int getPriority() {
-        return Priority.LOWEST;
+        return Priority.HIGHEST;
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean isValid(T value) {
-        if (value instanceof Collection<?>) { return ((Collection<?>) value).size() > 0; }
         return value != null && !"".equals(value.toString());
     }
 

@@ -52,17 +52,17 @@ public interface HasIcon {
 
     boolean isIconBordered();
 
-    void setIconInverse(boolean iconInverse);
+    void setIconMuted(boolean iconMuted);
 
-    boolean isIconInverse();
+    boolean isIconMuted();
+
+    void setIconLight(boolean iconLight);
+
+    boolean isIconLight();
 
     void setIconSpin(boolean iconSpin);
 
     boolean isIconSpin();
-
-    void setIconPulse(boolean iconPulse);
-
-    boolean isIconPulse();
 
     void setIconFixedWidth(boolean iconFixedWidth);
 

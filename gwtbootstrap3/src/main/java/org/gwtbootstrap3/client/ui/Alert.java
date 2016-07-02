@@ -56,8 +56,6 @@ public class Alert extends Div implements HasWidgets, HasText, HasType<AlertType
     private final Text text = new Text();
     private final CloseButton closeButton = new CloseButton();
 
-    private final HandlerRegistration closedHandlerReg;
-
     /**
      * Builds a default alert
      */
@@ -65,14 +63,6 @@ public class Alert extends Div implements HasWidgets, HasText, HasType<AlertType
         setStyleName(Styles.ALERT);
         setType(AlertType.WARNING);
         closeButton.setDataDismiss(ButtonDismiss.ALERT);
-        closedHandlerReg = addCloseHandler(new AlertCloseHandler() {
-            @Override
-            public void onClose(AlertCloseEvent evt) {
-                // Do logical detach
-                removeFromParent();
-                closedHandlerReg.removeHandler();
-            }
-        });
     }
 
     /**
@@ -167,30 +157,6 @@ public class Alert extends Div implements HasWidgets, HasText, HasType<AlertType
      */
     public boolean isDismissable() {
         return closeButton.getParent() != null;
-    }
-
-    /**
-     * Sets whether the Alert should fade out before it is removed
-     *
-     * @param fade The alert will fade on close before it is removed when {@code true}
-     */
-    public void setFade(final boolean fade) {
-        if (fade) {
-            addStyleName(Styles.FADE);
-            addStyleName(Styles.IN);
-        } else {
-            removeStyleName(Styles.FADE);
-            removeStyleName(Styles.IN);
-        }
-    }
-
-    /**
-     * Returns if the alert will fade out before it is removed
-     *
-     * @return true = alert will fade out, false = alert won't fade out
-     */
-    public boolean isFade() {
-        return StyleHelper.containsStyle(getStyleName(), Styles.FADE);
     }
 
     /**

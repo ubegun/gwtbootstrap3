@@ -4,7 +4,7 @@ package org.gwtbootstrap3.client.ui.base.button;
  * #%L
  * GwtBootstrap3
  * %%
- * Copyright (C) 2016 GwtBootstrap3
+ * Copyright (C) 2013 GwtBootstrap3
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,9 @@ package org.gwtbootstrap3.client.ui.base.button;
  * #L%
  */
 
-import org.gwtbootstrap3.client.ui.base.HasBadge;
 import org.gwtbootstrap3.client.ui.base.HasIcon;
 import org.gwtbootstrap3.client.ui.base.HasIconPosition;
 import org.gwtbootstrap3.client.ui.base.mixin.IconTextMixin;
-import org.gwtbootstrap3.client.ui.constants.BadgePosition;
 import org.gwtbootstrap3.client.ui.constants.ButtonType;
 import org.gwtbootstrap3.client.ui.constants.IconFlip;
 import org.gwtbootstrap3.client.ui.constants.IconPosition;
@@ -40,7 +38,7 @@ import com.google.gwt.user.client.ui.HasText;
  * @author Sven Jacobs
  * @see org.gwtbootstrap3.client.ui.Icon
  */
-public abstract class AbstractIconButton extends AbstractButton implements HasText, HasIcon, HasIconPosition, HasBadge {
+public abstract class AbstractIconButton extends AbstractButton implements HasText, HasIcon, HasIconPosition {
 
     IconTextMixin<AbstractIconButton> iconTextMixin = new IconTextMixin<AbstractIconButton>(this);
 
@@ -121,20 +119,24 @@ public abstract class AbstractIconButton extends AbstractButton implements HasTe
         return iconTextMixin.isIconBordered();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setIconInverse(final boolean iconInverse) {
-        iconTextMixin.setIconInverse(iconInverse);
+    public void setIconMuted(final boolean iconMuted) {
+        iconTextMixin.setIconMuted(iconMuted);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean isIconInverse() {
-        return iconTextMixin.isIconInverse();
+    public boolean isIconMuted() {
+        return iconTextMixin.isIconMuted();
+    }
+
+    @Override
+    public void setIconLight(final boolean iconLight) {
+        iconTextMixin.setIconLight(iconLight);
+    }
+
+    @Override
+    public boolean isIconLight() {
+        return iconTextMixin.isIconLight();
     }
 
     @Override
@@ -148,16 +150,6 @@ public abstract class AbstractIconButton extends AbstractButton implements HasTe
     }
 
     @Override
-    public void setIconPulse(boolean iconPulse) {
-        iconTextMixin.setIconPulse(iconPulse);
-    }
-
-    @Override
-    public boolean isIconPulse() {
-        return iconTextMixin.isIconPulse();
-    }
-
-    @Override
     public void setIconFixedWidth(final boolean iconFixedWidth) {
         iconTextMixin.setIconFixedWidth(iconFixedWidth);
     }
@@ -165,25 +157,5 @@ public abstract class AbstractIconButton extends AbstractButton implements HasTe
     @Override
     public boolean isIconFixedWidth() {
         return iconTextMixin.isIconFixedWidth();
-    }
-
-    @Override
-    public void setBadgeText(String badgeText) {
-        iconTextMixin.setBadgeText(badgeText);
-    }
-
-    @Override
-    public String getBadgeText() {
-        return iconTextMixin.getBadgeText();
-    }
-
-    @Override
-    public void setBadgePosition(BadgePosition badgePosition) {
-        iconTextMixin.setBadgePosition(badgePosition);
-    }
-
-    @Override
-    public BadgePosition getBadgePosition() {
-        return iconTextMixin.getBadgePosition();
     }
 }
